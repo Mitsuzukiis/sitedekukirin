@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electric Scooter Store</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <style>
+        /* --- Revamped Header UI --- */
+        header {
+            background: #fff; /* changed from dark to white */
+            color: #222;
+            padding: 0;
+            text-align: center;
+            border-radius: 0 0 32px 32px;
+            box-shadow: 0 8px 32px rgba(31,38,135,0.10);
+            margin-bottom: 18px;
+            position: relative;
+        }
+        #header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 18px 32px 0 32px;
+            border-radius: 0 0 32px 32px;
+        }
+        #logo-title-group {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        #store-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            background: #fff;
+            object-fit: cover;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+            border: 3px solid #007bff;
+            transition: transform 0.2s;
+        }
+        #store-logo:hover {
+            transform: scale(1.08) rotate(-6deg);
+        }
+        h1 {
+            font-size: 2.1em !important;
+            margin: 0;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #111 !important; /* changed to black */
+            text-shadow: none;
+        }
+        nav {
+            margin: 0;
+        }
+        nav ul {
+            display: flex;
+            gap: 18px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav a {
+            background: linear-gradient(90deg, #007bff 0%, #00c6ff 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 10px 24px;
+            font-weight: bold;
+            font-size: 1.08em;
+            box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+            transition: background 0.2s, transform 0.18s, box-shadow 0.2s;
+            border: none;
+            outline: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+        nav a:hover {
+            background: linear-gradient(90deg, #0056b3 0%, #00aaff 100%);
+            transform: scale(1.08) translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,123,255,0.15);
+        }
+        /* --- Profile and Cart Icons Top Right --- */
+        #header-right-group {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            position: relative;
+        }
+        #profile-icon-container, #cart-icon-container {
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(31,38,135,0.07);
+            padding: 6px;
+            display: flex !important;
+            align-items: center;
+            position: static;
+            margin: 0;
+        }
+        #profile-icon-container {
+            margin-right: 0;
+        }
+        #cart-icon-container {
+            margin-left: 0;
+        }
+        #profile-icon.animated {
+            animation: bounce 0.5s;
+            animation-iteration-count: 1;
+        }
+        /* --- About Us Hover Expansion --- */
+        #about-us {
+            transition: all 0.35s cubic-bezier(.4,2,.6,1);
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            min-height: 180px;
+        }
+        #about-us.expanded {
+            min-height: 420px;
+            max-height: 600px;
+            background: linear-gradient(90deg, #e0eafc 0%, #cfdef3 100%);
+            box-shadow: 0 8px 32px rgba(31,38,135,0.10);
+            border-radius: 24px;
+            z-index: 2;
+        }
+        #about-us-extra {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin-top: 18px;
+            animation: popIn 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        #about-us.expanded #about-us-extra {
+            display: flex;
+        }
+        #about-us-extra img {
+            width: 180px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        #about-us-extra .important {
+            font-size: 1.25em;
+            color: #007bff;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        #about-us-extra .desc {
+            color: #333;
+            font-size: 1.08em;
+            margin-bottom: 10px;
+        }
+        #about-us-extra .tips {
+            color: #28a745;
+            font-size: 1em;
+            margin-top: 8px;
+        }
+        /* Responsive header */
+        @media (max-width: 900px) {
+            #header-inner {
+                flex-direction: column;
+                gap: 12px;
+                padding: 18px 8px 0 8px;
+            }
+            nav ul {
+                gap: 8px;
+            }
+            #header-right-group {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="header-inner">
+            <div id="logo-title-group">
+                <img id="store-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl5EqWRvMyo75_alyXxTIV1iTZ-hs0U1Iwdg&s" alt="Store Logo" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/4/4e/Kugoo_Kirin_logo.png'">
+                <h1>Electric Scooter Store</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="index.html" id="home-nav-link">Home</a>
+                    </li>
+                    <li><a href="categories.html">Categories</a></li>
+                    <li id="login-nav-li" style="display:none;"><a href="login.html" id="login-nav-link">Login Now</a></li>
+                </ul>
+            </nav>
+            <!-- Group profile and cart icons in a flex container for top right alignment -->
+            <div id="header-right-group">
+                <div id="profile-icon-container" style="display:flex;">
+                    <a id="profile-link" href="login.html">
+                        <img id="profile-icon" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile">
+                    </a>
+                </div>
+                <div id="cart-icon-container">
+                    <a href="checkout.html" id="cart-link">
+                        <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" alt="Cart" style="width:36px;height:36px;">
+                        <span id="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section id="about-us" class="card fade-in">
+            <h2>About Us</h2>
+            <p>
+                Welcome to the Electric Scooter Store! We are passionate about providing the best electric scooters, parts, and accessories for all riders. Our mission is to make urban mobility fun, affordable, and eco-friendly. Explore our categories to find the perfect scooter or upgrade for your ride. We offer fast shipping, great deals, and top-notch customer support.
+            </p>
+            <ul>
+                <li>Wide selection of KuKirin scooters</li>
+                <li>Original parts and accessories</li>
+                <li>Secure checkout and fast delivery</li>
+                <li>Exclusive discounts and coupon codes</li>
+                <li>Admin panel for order management</li>
+            </ul>
+            <div id="about-us-extra"></div>
+        </section>
+        <div id="product-catalog"></div>
+    </main>
+    <footer>
+    </footer>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/catalog.js"></script>
+    <script>
+        // Always show cart and profile icons if logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('loggedInUser') || 'null');
+            const profileIconContainer = document.getElementById('profile-icon-container');
+            const loginNavLi = document.getElementById('login-nav-li');
+            if (profileIconContainer) profileIconContainer.style.display = user ? 'flex' : 'none';
+            if (loginNavLi) loginNavLi.style.display = user ? 'none' : '';
+        });
+
+        // Hide About Us if category is present in URL
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('category')) {
+                const aboutUs = document.getElementById('about-us');
+                if (aboutUs) aboutUs.style.display = 'none';
+            }
+        });
+
+        // Ensure cart count updates on navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof updateCartCount === 'function') updateCartCount();
+        });
+
+        // Orders button for admin (password: orders)
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('loggedInUser') || 'null');
+            let btn = document.getElementById('orders-btn');
+            if (btn) btn.remove();
+            if (user && user.email === 'pyropyro1235@gmail.com') {
+                btn = document.createElement('button');
+                btn.id = 'orders-btn';
+                btn.textContent = 'View Orders';
+                btn.onclick = function() {
+                    const pwd = prompt('Enter orders password:');
+                    if (pwd === 'orders') {
+                        let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+                        if (!orders.length) return alert('No orders yet.');
+                        let html = '<h2 style="margin-bottom:10px;">All Orders</h2><ul style="max-height:300px;overflow:auto;text-align:left;">';
+                        orders.slice().reverse().forEach(o => {
+                            html += `<li><b>${o.name}</b> (${o.email})<br>Items: ${o.items.map(i=>`${i.name} x${i.quantity}`).join(', ')}<br>Total: $${o.total.toFixed(2)}<br><span style="color:#888;">${o.date}</span></li><hr>`;
+                        });
+                        html += '</ul>';
+                        let overlay = document.createElement('div');
+                        overlay.style.position = 'fixed';
+                        overlay.style.top = 0;
+                        overlay.style.left = 0;
+                        overlay.style.width = '100vw';
+                        overlay.style.height = '100vh';
+                        overlay.style.background = 'rgba(0,0,0,0.45)';
+                        overlay.style.zIndex = 10002;
+                        overlay.innerHTML = `<div style="background:#fff;padding:32px 24px;border-radius:16px;max-width:520px;width:95vw;box-shadow:0 8px 32px rgba(31,38,135,0.18);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">${html}<button style="margin-top:10px;" class="btn" onclick="this.closest('div').parentNode.remove()">Close</button></div>`;
+                        document.body.appendChild(overlay);
+                    } else if (pwd !== null) {
+                        alert('Incorrect password.');
+                    }
+                };
+                document.body.appendChild(btn);
+            }
+        });
+
+        // --- About Us hover: expand, show random image and text ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const aboutUs = document.getElementById('about-us');
+            const aboutUsExtra = document.getElementById('about-us-extra');
+            const hoverData = [
+                {
+                    img: "https://kukirin.com/cdn/shop/files/Kukirin-G2-Max-1_600x.jpg",
+                    important: "Best Seller: KuKirin G2 Max",
+                    desc: "1000W, 80km range, city & off-road ready. Unmatched power and comfort.",
+                    tips: "Tip: Use code <b>SAVE10</b> for 10% off!"
+                },
+                {
+                    img: "https://kukirin.com/cdn/shop/files/LED-Headlight-for-KUGOO-Kirin-G2-Pro-Electric-Scooter-Accessories.jpg",
+                    important: "Upgrade Your Ride",
+                    desc: "Genuine KuKirin accessories: LED lights, phone holders, and more.",
+                    tips: "Fast shipping on all accessories."
+                },
+                {
+                    img: "https://kukirin.com/cdn/shop/files/Brake-Disc-for-KUGOO-Kirin-G2-Pro-Electric-Scooter-Original-Spare-Parts-Accessories-120mm-Disc-Brake-Rotor.jpg",
+                    important: "Certified Parts",
+                    desc: "Keep your scooter safe and reliable with original KuKirin parts.",
+                    tips: "15% off all parts with code <b>PARTS15</b>."
+                },
+                {
+                    img: "https://cdn.kukirin.com/logo.png",
+                    important: "Official KuKirin Partner",
+                    desc: "Shop with confidence. 100% genuine products, direct from KuKirin.",
+                    tips: "Exclusive deals for registered users."
+                }
+            ];
+            let lastIdx = -1;
+            function showAboutUsExtra() {
+                let idx;
+                do { idx = Math.floor(Math.random() * hoverData.length); } while (idx === lastIdx && hoverData.length > 1);
+                lastIdx = idx;
+                const d = hoverData[idx];
+                aboutUsExtra.innerHTML = `
+                    <img src="${d.img}" alt="Highlight">
+                    <div class="important">${d.important}</div>
+                    <div class="desc">${d.desc}</div>
+                    <div class="tips">${d.tips}</div>
+                `;
+            }
+            aboutUs.addEventListener('mouseenter', function() {
+                aboutUs.classList.add('expanded');
+                showAboutUsExtra();
+            });
+            aboutUs.addEventListener('mouseleave', function() {
+                aboutUs.classList.remove('expanded');
+            });
+        });
+
+        // Ensure profile info and login state are updated
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof displayProfileInfo === 'function') displayProfileInfo();
+        });
+
+        // Remove cart icon if on checkout.html
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.location.pathname.endsWith('checkout.html')) {
+                const cartIconContainer = document.getElementById('cart-icon-container');
+                if (cartIconContainer) cartIconContainer.style.display = 'none';
+            }
+        });
+
+        // Always show Home button when navigating categories
+        document.addEventListener('DOMContentLoaded', function() {
+            const homeNav = document.getElementById('home-nav-link');
+            if (homeNav) homeNav.style.display = '';
+        });
+
+        // Profile icon: play pulse animation on hover, only once per hover
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileIcon = document.getElementById('profile-icon');
+            if (profileIcon) {
+                let animating = false;
+                profileIcon.onmouseenter = function() {
+                    if (!animating) {
+                        animating = true;
+                        profileIcon.classList.add('pulse');
+                        profileIcon.addEventListener('animationend', function handler() {
+                            profileIcon.classList.remove('pulse');
+                            animating = false;
+                            profileIcon.removeEventListener('animationend', handler);
+                        });
+                    }
+                };
+                profileIcon.onmouseleave = function() {
+                    // No infinite animation
+                };
+            }
+        });
+
+        // Profile icon: link to settings if logged in, update image if available
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('loggedInUser') || 'null');
+            const profileIcon = document.getElementById('profile-icon');
+            const profileLink = document.getElementById('profile-link');
+            if (user) {
+                if (user.profileImage) {
+                    profileIcon.src = user.profileImage;
+                }
+                if (profileLink) {
+                    profileLink.href = "settings.html";
+                    profileLink.title = "Account Settings";
+                }
+            } else {
+                if (profileLink) {
+                    profileLink.href = "login.html";
+                    profileLink.title = "Login";
+                }
+            }
+        });
+
+        // Remove categories section from home page entirely
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoriesSection = document.getElementById('categories-section');
+            if (categoriesSection) categoriesSection.remove();
+        });
+
+        // Add persistent Admin Panel button for admin user (bottom left)
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('loggedInUser') || 'null');
+            let existingBtn = document.getElementById('admin-panel-btn');
+            if (existingBtn) existingBtn.remove();
+            if (user && user.email === 'pyropyro1235@gmail.com') {
+                const adminBtn = document.createElement('button');
+                adminBtn.id = 'admin-panel-btn';
+                adminBtn.textContent = 'Admin Panel';
+                adminBtn.style.position = 'fixed';
+                adminBtn.style.left = '32px';
+                adminBtn.style.bottom = '32px';
+                adminBtn.style.background = 'linear-gradient(90deg,#007bff 0%,#00c6ff 100%)';
+                adminBtn.style.color = '#fff';
+                adminBtn.style.border = 'none';
+                adminBtn.style.borderRadius = '8px';
+                adminBtn.style.padding = '14px 32px';
+                adminBtn.style.fontSize = '1.2em';
+                adminBtn.style.fontWeight = 'bold';
+                adminBtn.style.cursor = 'pointer';
+                adminBtn.style.zIndex = '999';
+                adminBtn.onclick = function() {
+                    const pwd = prompt('Enter admin password:');
+                    if (pwd === 'panel') {
+                        fetch('admin.html').then(r => {
+                            if (r.ok) {
+                                window.location.href = 'admin.html';
+                            } else {
+                                alert('Admin panel is not available yet.');
+                            }
+                        }).catch(() => {
+                            alert('Admin panel is not available yet.');
+                        });
+                    } else if (pwd !== null) {
+                        alert('Incorrect password.');
+                    }
+                };
+                document.body.appendChild(adminBtn);
+            }
+        });
+
+        // Always show admin panel button for admin user
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof showAdminPanelButton === 'function') showAdminPanelButton();
+            setTimeout(function() {
+                if (typeof showAdminPanelButton === 'function') showAdminPanelButton();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

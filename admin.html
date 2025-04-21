@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel - Electric Scooter Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <style>
+        body { background: #eaf2fb; }
+        .admin-panel-container {
+            max-width: 700px;
+            margin: 48px auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(31,38,135,0.18);
+            padding: 36px 32px 28px 32px;
+        }
+        h1 { text-align: center; }
+        .order-list { list-style: none; padding: 0; }
+        .order-item {
+            border-bottom: 1px solid #eee;
+            padding: 18px 0;
+        }
+        .order-actions button {
+            margin-right: 10px;
+            padding: 6px 16px;
+            border-radius: 8px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .approve-btn { background: #28a745; color: #fff; }
+        .disapprove-btn { background: #dc3545; color: #fff; }
+        .status-approved { color: #28a745; font-weight: bold; }
+        .status-disapproved { color: #dc3545; font-weight: bold; }
+        .status-pending { color: #888; font-weight: bold; }
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin: 10px 0 10px 0;
+        }
+        .profile-section img {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #007bff;
+            background: #f4f4f4;
+        }
+        .profile-section .profile-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .go-back-btn {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 24px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <button class="go-back-btn" id="go-back-btn">Go Back</button>
+    <div class="admin-panel-container">
+        <h1>Admin Panel</h1>
+        <div id="adminMessage" style="text-align:center;color:#dc3545;margin-bottom:18px;"></div>
+        <ul id="order-list" class="order-list"></ul>
+        <button id="logout-btn" class="btn" style="margin-top:24px;background:#dc3545;">Logout</button>
+    </div>
+    <script>
+        // Access control: only pyropyro1235@gmail.com and password "panel"
+        const user = JSON.parse(localStorage.getItem('loggedInUser') || 'null');
+        if (!user || user.email !== 'pyropyro1235@gmail.com') {
+            alert('Access denied. Admins only.');
+            window.location.href = 'index.html';
+        } else {
+            let pwd = sessionStorage.getItem('adminPanelPwd');
+            if (pwd !== 'panel') {
+                pwd = prompt('Enter admin password:');
+                if (pwd !== 'panel') {
+                    alert('Incorrect password.');
+                    window.location.href = 'index.html';
+                } else {
+                    sessionStorage.setItem('adminPanelPwd', 'panel');
+                }
+            }
+        }
+
+        // Go Back button logic
+        document.getElementById('go-back-btn').onclick = function() {
+            window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
+        };
+
+        // Render orders with approve/disapprove, show payment info, user profile
+        function renderOrders() {
+            const orderList = document.getElementById('order-list');
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            if (!orders.length) {
+                orderList.innerHTML = '<li style="color:#888;text-align:center;">No orders yet.</li>';
+                return;
+            }
+            orderList.innerHTML = '';
+            orders.slice().reverse().forEach((order, idx) => {
+                const status = order.status || 'pending';
+                let statusHtml = '';
+                if (status === 'approved') statusHtml = '<span class="status-approved">Approved</span>';
+                else if (status === 'disapproved') statusHtml = '<span class="status-disapproved">Disapproved</span>';
+                else statusHtml = '<span class="status-pending">Pending</span>';
+                let items = order.items.map(i => `${i.name} x${i.quantity}`).join(', ');
+                let coupon = order.coupon ? `<br><b>Coupon:</b> ${order.coupon}` : '';
+                // Payment info
+                let paymentInfo = '';
+                if (order.cardNumber) {
+                    // Show full card number, expiry, and CVC for admin
+                    paymentInfo = `<b>Payment:</b> Credit Card <span style="color:#dc3545;font-weight:bold;">${order.cardNumber}</span>`;
+                    if (order.cardExpiry) paymentInfo += ` Exp: <span style="color:#007bff;">${order.cardExpiry}</span>`;
+                    if (order.cardCvc) paymentInfo += ` CVC: <span style="color:#007bff;">${order.cardCvc}</span>`;
+                } else if (order.paypalEmail) {
+                    paymentInfo = `<b>Payment:</b> PayPal (${order.paypalEmail})`;
+                } else {
+                    paymentInfo = `<b>Payment:</b> N/A`;
+                }
+                // Show user profile (username, bio, image)
+                let userProfileHtml = '';
+                if (order.email) {
+                    let users = JSON.parse(localStorage.getItem('users') || '[]');
+                    let u = users.find(u => u.email === order.email);
+                    if (u) {
+                        userProfileHtml = `
+                        <div class="profile-section">
+                            <img src="${u.profileImage || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" alt="Profile">
+                            <div class="profile-info">
+                                <div><b>${u.username || '(no username)'}</b></div>
+                                <div style="font-size:0.95em;color:#555;">${u.bio || ''}</div>
+                                <div style="font-size:0.92em;color:#888;">${u.email}</div>
+                            </div>
+                        </div>
+                        `;
+                    } else {
+                        userProfileHtml = `<div class="profile-section"><img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile"><div class="profile-info"><div><b>Unknown User</b></div><div style="font-size:0.92em;color:#888;">${order.email}</div></div></div>`;
+                    }
+                }
+                orderList.innerHTML += `
+                    <li class="order-item" data-idx="${orders.length-1-idx}">
+                        ${userProfileHtml}
+                        <b>${order.name}</b> (${order.email})<br>
+                        <b>Address:</b> ${order.address}, ${order.city}, ${order.zip}, ${order.country}<br>
+                        <b>Items:</b> ${items}<br>
+                        <b>Total:</b> $${order.total.toFixed(2)}${coupon}<br>
+                        ${paymentInfo}<br>
+                        <span style="color:#888;">${order.date}</span><br>
+                        <div><b>Data Saver:</b> ${order.dataSaver || 'N/A'}</div>
+                        <div>Status: ${statusHtml}</div>
+                        <div class="order-actions" style="margin-top:8px;">
+                            <button class="approve-btn"${status==='approved'?' disabled':''}>Approve</button>
+                            <button class="disapprove-btn"${status==='disapproved'?' disabled':''}>Disapprove</button>
+                        </div>
+                    </li>
+                `;
+            });
+            // Add event listeners
+            document.querySelectorAll('.approve-btn').forEach(btn => {
+                btn.onclick = function() {
+                    const idx = parseInt(this.closest('.order-item').getAttribute('data-idx'));
+                    updateOrderStatus(idx, 'approved');
+                };
+            });
+            document.querySelectorAll('.disapprove-btn').forEach(btn => {
+                btn.onclick = function() {
+                    const idx = parseInt(this.closest('.order-item').getAttribute('data-idx'));
+                    removeOrder(idx);
+                };
+            });
+        }
+
+        function updateOrderStatus(idx, status) {
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            if (orders[idx]) {
+                orders[idx].status = status;
+                localStorage.setItem('orders', JSON.stringify(orders));
+                renderOrders();
+            }
+        }
+
+        // Remove order entirely on disapprove
+        function removeOrder(idx) {
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            if (orders[idx]) {
+                if (confirm('Are you sure you want to disapprove and remove this order?')) {
+                    orders.splice(idx, 1);
+                    localStorage.setItem('orders', JSON.stringify(orders));
+                    renderOrders();
+                }
+            }
+        }
+
+        renderOrders();
+
+        // Logout
+        document.getElementById('logout-btn').onclick = function() {
+            localStorage.removeItem('loggedInUser');
+            sessionStorage.removeItem('adminPanelPwd');
+            window.location.href = 'index.html';
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories - Electric Scooter Store</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <style>
+        /* Custom slide-in for category list */
+        .category-list.slide-in-big {
+            animation: slideInBig 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        @keyframes slideInBig {
+            0% { transform: translateX(-100vw); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        #profile-icon.animated {
+            animation: bounce 0.5s;
+            animation-iteration-count: 1;
+        }
+        header {
+            background: #fff;
+            color: #222;
+            padding: 0;
+            text-align: center;
+            border-radius: 0 0 32px 32px;
+            box-shadow: 0 8px 32px rgba(31,38,135,0.10);
+            margin-bottom: 18px;
+            position: relative;
+        }
+        #header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 18px 32px 0 32px;
+            border-radius: 0 0 32px 32px;
+        }
+        #logo-title-group {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        #store-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            background: #fff;
+            object-fit: cover;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+            border: 3px solid #007bff;
+            transition: transform 0.2s;
+        }
+        #store-logo:hover {
+            transform: scale(1.08) rotate(-6deg);
+        }
+        h1 {
+            font-size: 2.1em !important;
+            margin: 0;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #111 !important;
+            text-shadow: none;
+        }
+        nav ul {
+            display: flex;
+            gap: 18px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav a {
+            background: linear-gradient(90deg, #007bff 0%, #00c6ff 100%);
+            color: #fff;
+            border-radius: 12px;
+            padding: 10px 24px;
+            font-weight: bold;
+            font-size: 1.08em;
+            box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+            transition: background 0.2s, transform 0.18s, box-shadow 0.2s;
+            border: none;
+            outline: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+        nav a:hover {
+            background: linear-gradient(90deg, #0056b3 0%, #00aaff 100%);
+            transform: scale(1.08) translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,123,255,0.15);
+        }
+        #header-right-group {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            position: relative;
+        }
+        #profile-icon-container, #cart-icon-container {
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(31,38,135,0.07);
+            padding: 6px;
+            display: flex !important;
+            align-items: center;
+            position: static;
+            margin: 0;
+        }
+        #cart-count {
+            position: absolute;
+            bottom: -8px;
+            right: -8px;
+            background: #dc3545;
+            color: #fff;
+            border-radius: 50%;
+            padding: 1px 5px;
+            font-size: 0.75em;
+            font-weight: bold;
+            min-width: 16px;
+            text-align: center;
+            top: unset;
+            left: unset;
+            z-index: 101;
+        }
+        #cart-link {
+            position: relative;
+            display: inline-block;
+        }
+        #cart-link img {
+            display: block;
+        }
+        #profile-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #007bff;
+            background: #fff;
+            cursor: pointer;
+            padding: 8px;
+            box-sizing: content-box;
+        }
+        #profile-icon:hover {
+            box-shadow: 0 0 0 8px rgba(0,123,255,0.08);
+        }
+        @media (max-width: 900px) {
+            #header-inner {
+                flex-direction: column;
+                gap: 12px;
+                padding: 18px 8px 0 8px;
+            }
+            nav ul {
+                gap: 8px;
+            }
+            #header-right-group {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="header-inner">
+            <div id="logo-title-group">
+                <img id="store-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl5EqWRvMyo75_alyXxTIV1iTZ-hs0U1Iwdg&s" alt="Store Logo" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/4/4e/Kugoo_Kirin_logo.png'">
+                <h1>Electric Scooter Categories</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" id="home-nav-link">Home</a></li>
+                    <li><a href="categories.html" id="categories-nav-link">Categories</a></li>
+                    <li><a href="login.html" id="login-nav-link" style="display:none;">Login</a></li>
+                </ul>
+            </nav>
+            <div id="header-right-group">
+                <div id="profile-icon-container" style="display:flex;">
+                    <a id="profile-link" href="login.html">
+                        <img id="profile-icon" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile">
+                    </a>
+                </div>
+                <div id="cart-icon-container">
+                    <a href="checkout.html" id="cart-link">
+                        <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" alt="Cart" style="width:36px;height:36px;">
+                        <span id="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="categories card fade-in" style="margin-top:60px;">
+            <h2>Explore Our Categories</h2>
+            <div class="category-list slide-in-big" style="display: flex; gap: 32px;">
+                <div class="category-item">
+                    <img src="https://s13emagst.akamaized.net/products/51929/51928900/images/res_f46b0b2b8f21edc0246b0600713fcdc6.jpg" alt="KuKirin Scooters" style="width:120px;height:90px;object-fit:cover;border-radius:8px;">
+                    <h3>Scooters</h3>
+                    <p>All KuKirin scooter models, including G2 Max, G3 Pro, M5 Pro, and more.</p>
+                    <a href="index.html?category=scooters" class="btn">Shop Now</a>
+                </div>
+                <div class="category-item">
+                    <img src="https://www.kukirin-scooter.com/cdn/shop/products/KuKirinG2MaxOuterTire.jpg?v=1679731789&width=533" alt="KuKirin Parts" style="width:120px;height:90px;object-fit:cover;border-radius:8px;">
+                    <h3>Parts</h3>
+                    <p>Original KuKirin parts: disc brakes, motors, batteries, tires, and more.</p>
+                    <a href="index.html?category=parts" class="btn">Shop Now</a>
+                </div>
+                <div class="category-item">
+                    <img src="https://doctorscooter.co.uk/wp-content/uploads/2022/03/104.jpg" alt="Accessories" style="width:120px;height:90px;object-fit:cover;border-radius:8px;">
+                    <h3>Accessories</h3>
+                    <p>Enhance your ride: LED lights, extended headlights, phone holders, and more.</p>
+                    <a href="index.html?category=accessories" class="btn">Shop Now</a>
+                </div>
+                <div class="category-item" id="admin-category-item" style="display:block;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Admin Category" style="width:120px;height:90px;object-fit:cover;border-radius:8px;">
+                    <h3>Admin</h3>
+                    <p>Special admin-only category. Password required.</p>
+                    <button class="btn" id="admin-category-btn">Enter Admin Category</button>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+    </footer>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/catalog.js"></script>
+    <script>
+        // Always show Home and Categories buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const homeNav = document.getElementById('home-nav-link');
+            if (homeNav) homeNav.style.display = '';
+            const categoriesNav = document.getElementById('categories-nav-link');
+            if (categoriesNav) categoriesNav.style.display = '';
+        });
+
+        // Remove cart icon if on checkout.html
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.location.pathname.endsWith('checkout.html')) {
+                const cartIconContainer = document.getElementById('cart-icon-container');
+                if (cartIconContainer) cartIconContainer.style.display = 'none';
+            }
+        });
+
+        // Profile icon: play pulse animation on hover, only once per hover
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileIcon = document.getElementById('profile-icon');
+            if (profileIcon) {
+                let animating = false;
+                profileIcon.onmouseenter = function() {
+                    if (!animating) {
+                        animating = true;
+                        profileIcon.classList.add('pulse');
+                        profileIcon.addEventListener('animationend', function handler() {
+                            profileIcon.classList.remove('pulse');
+                            animating = false;
+                            profileIcon.removeEventListener('animationend', handler);
+                        });
+                    }
+                };
+                profileIcon.onmouseleave = function() {};
+            }
+        });
+
+        // Hide login link if logged in, show if not
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('loggedInUser') || 'null');
+            const loginNav = document.getElementById('login-nav-link');
+            if (loginNav) loginNav.style.display = user ? 'none' : '';
+        });
+
+        // Ensure profile info and login state are updated
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof displayProfileInfo === 'function') displayProfileInfo();
+        });
+
+        // Profile icon: link to settings if logged in, update image if available
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('loggedInUser') || 'null');
+            const profileIcon = document.getElementById('profile-icon');
+            const profileLink = document.getElementById('profile-link');
+            if (user) {
+                if (user.profileImage) {
+                    profileIcon.src = user.profileImage;
+                }
+                if (profileLink) {
+                    profileLink.href = "settings.html";
+                    profileLink.title = "Account Settings";
+                }
+            } else {
+                if (profileLink) {
+                    profileLink.href = "login.html";
+                    profileLink.title = "Login";
+                }
+            }
+        });
+
+        // Admin category button logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const adminBtn = document.getElementById('admin-category-btn');
+            if (adminBtn) {
+                adminBtn.onclick = function() {
+                    const pwd = prompt('Enter admin category password:');
+                    if (pwd === 'panel') {
+                        window.location.href = 'index.html?category=admin';
+                    } else if (pwd !== null) {
+                        alert('Incorrect password.');
+                    }
+                };
+            }
+        });
+
+        // Always show admin panel button for admin user
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof showAdminPanelButton === 'function') showAdminPanelButton();
+            setTimeout(function() {
+                if (typeof showAdminPanelButton === 'function') showAdminPanelButton();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

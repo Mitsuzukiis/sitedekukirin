@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Electric Scooter Store</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <style>
+        #profile-icon.animated {
+            animation: bounce 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Checkout</h1>
+        <div id="profile-icon-container" style="display:none;">
+            <a id="profile-link" href="login.html">
+                <img id="profile-icon" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile">
+            </a>
+        </div>
+    </header>
+    <main>
+        <section id="cart" class="card fade-in">
+            <h2>Your Cart</h2>
+            <ul id="cart-items">
+                <!-- Cart items will be dynamically populated here -->
+            </ul>
+            <div id="cart-total">
+                <strong>Total: </strong><span id="total-amount">$0.00</span>
+            </div>
+        </section>
+        <section id="shipping-info" class="card fade-in">
+            <h2>Shipping Information</h2>
+            <form id="shipping-form">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" required>
+                
+                <label for="address">Address:</label>
+                <input type="text" id="address" required>
+                
+                <label for="city">City:</label>
+                <input type="text" id="city" required>
+                
+                <label for="zip">Zip Code:</label>
+                <input type="text" id="zip" required>
+                
+                <label for="country">Country:</label>
+                <input type="text" id="country" required>
+                
+                <button type="submit" class="btn">Complete Purchase</button>
+            </form>
+        </section>
+        <section id="coupon-section" class="card fade-in">
+            <h2>Apply Coupon Code</h2>
+            <input type="text" id="coupon-code" placeholder="Enter coupon code">
+            <button id="apply-coupon" class="btn">Apply</button>
+            <div id="coupon-message"></div>
+        </section>
+    </main>
+    <footer>
+    </footer>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/checkout.js"></script>
+    <script src="assets/js/coupons.js"></script>
+    <script>
+        // Profile icon: play pulse animation on hover, only once per hover
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileIcon = document.getElementById('profile-icon');
+            if (profileIcon) {
+                let animating = false;
+                profileIcon.onmouseenter = function() {
+                    if (!animating) {
+                        animating = true;
+                        profileIcon.classList.add('pulse');
+                        profileIcon.addEventListener('animationend', function handler() {
+                            profileIcon.classList.remove('pulse');
+                            animating = false;
+                            profileIcon.removeEventListener('animationend', handler);
+                        });
+                    }
+                };
+                profileIcon.onmouseleave = function() {};
+            }
+
+            // Profile icon: link to settings if logged in, update image if available
+            const user = JSON.parse(localStorage.getItem('loggedInUser') || 'null');
+            const profileLink = document.getElementById('profile-link');
+            const profileIconContainer = document.getElementById('profile-icon-container');
+            if (user) {
+                if (user.profileImage) {
+                    profileIcon.src = user.profileImage;
+                }
+                if (profileLink) {
+                    profileLink.href = "settings.html";
+                    profileLink.title = "Account Settings";
+                }
+                if (profileIconContainer) profileIconContainer.style.display = "flex";
+            } else {
+                if (profileLink) {
+                    profileLink.href = "login.html";
+                    profileLink.title = "Login";
+                }
+            }
+        });
+    </script>
+</body>
+</html>
